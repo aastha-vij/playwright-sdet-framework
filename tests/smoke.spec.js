@@ -2,7 +2,9 @@ import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
 import { InventoryPage } from '../pages/InventoryPage';
 import { CartPage } from '../pages/CartPage';
+import { users } from '../testData/users';
 
+const user = users.standard;
 test('User can add a product to the cart @smoke', async ({ page }) => {
 
   const loginPage = new LoginPage(page);
@@ -11,7 +13,7 @@ test('User can add a product to the cart @smoke', async ({ page }) => {
 
   await page.goto('/');
   await expect(page).toHaveTitle('Swag Labs');
-  await loginPage.login('standard_user', 'secret_sauce');
+  await loginPage.login(user.username, user.password);
   await expect(page).toHaveURL(/.*inventory.html/);
 
   expect(await inventoryPage.isProductsPageVisible()).toBe(true);
