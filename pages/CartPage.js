@@ -6,12 +6,4 @@ export class CartPage {
             hasText: 'Sauce Labs Backpack',
         });
     }
-
-    async isCartPageVisible() {
-        return await this.cartTitle.isVisible();
-    }
-
-    async isBackpackInCart() {
-        return await this.backpack.isVisible();
-    }
 }

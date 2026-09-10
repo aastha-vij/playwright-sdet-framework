@@ -1,6 +1,3 @@
-import { expect } from '@playwright/test';
-import { get } from 'node:http';
-
 export class InventoryPage {
     constructor(page) {
         this.page = page;
@@ -14,20 +11,8 @@ export class InventoryPage {
         this.shoppingCartLink = page.locator('.shopping_cart_link');
     }
 
-    async isProductsPageVisible() {
-        return await this.productsTitle.isVisible();
-    }
-
     async addBackpackToCart() {
         await this.addToCartButton.click();
-    }
-
-    async isBackpackAddedToCart() {
-        return await this.removeButton.isVisible();
-    }
-
-    async getCartCount() {
-        return await this.shoppingCartBadge.textContent();
     }
 
     async goToCart() {

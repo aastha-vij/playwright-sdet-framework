@@ -9,6 +9,8 @@
     "test:debug": "playwright test --debug",
     "test:ui": "playwright test --ui",
     "test:smoke": "playwright test --grep @smoke",
+    "test:login": "playwright test --grep @login",
+    "test:negative": "playwright test --grep @negative",
     "report": "playwright show-report"
   },
   "keywords": [],

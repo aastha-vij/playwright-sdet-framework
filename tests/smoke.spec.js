@@ -5,7 +5,7 @@ import { CartPage } from '../pages/CartPage';
 import { users } from '../testData/users';
 
 const user = users.standard;
-test('User can add a product to the cart @smoke', async ({ page }) => {
+test('User can add a product to the cart @smoke @cart', async ({ page }) => {
 
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
@@ -16,15 +16,15 @@ test('User can add a product to the cart @smoke', async ({ page }) => {
   await loginPage.login(user.username, user.password);
   await expect(page).toHaveURL(/.*inventory.html/);
 
-  expect(await inventoryPage.isProductsPageVisible()).toBe(true);
+  await expect(inventoryPage.productsTitle).toBeVisible();
 
   await inventoryPage.addBackpackToCart();
-  expect(await inventoryPage.isBackpackAddedToCart()).toBe(true);
+  await expect(inventoryPage.removeButton).toBeVisible();
 
-  expect(await inventoryPage.getCartCount()).toBe('1');
+  await expect(inventoryPage.shoppingCartBadge).toHaveText('1');
   await inventoryPage.goToCart();
   await expect(page).toHaveURL(/.*cart.html/);
 
-  expect(await cartPage.isCartPageVisible()).toBe(true);
-  expect(await cartPage.isBackpackInCart()).toBe(true);
+  await expect(cartPage.cartTitle).toBeVisible();
+  await expect(cartPage.backpack).toBeVisible();
 });
