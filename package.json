@@ -11,6 +11,7 @@
     "test:smoke": "playwright test --grep @smoke",
     "test:login": "playwright test --grep @login",
     "test:negative": "playwright test --grep @negative",
+    "test:products": "playwright test --grep @products",
     "report": "playwright show-report"
   },
   "keywords": [],
