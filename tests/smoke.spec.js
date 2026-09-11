@@ -4,6 +4,7 @@ import { InventoryPage } from '../pages/InventoryPage';
 import { CartPage } from '../pages/CartPage';
 import { users } from '../testData/users';
 import { ProductDetailsPage } from '../pages/ProductDetailsPage';
+import { CheckoutPage } from '../pages/CheckoutPage';
 
 const user = users.standard;
 
@@ -254,4 +255,81 @@ test('Cart becomes empty after removing the only product @smoke @cart', async ({
   ).not.toBeVisible();
 
   await expect(cartPage.getCartItems()).toHaveCount(0);
+});
+
+test('User can open checkout page @smoke @checkout', async ({ page }) => {
+
+  const loginPage = new LoginPage(page);
+  const inventoryPage = new InventoryPage(page);
+  const cartPage = new CartPage(page);
+  const checkoutPage = new CheckoutPage(page);
+
+  await page.goto('/');
+  await loginPage.login(user.username, user.password);
+
+  await expect(inventoryPage.productsTitle).toBeVisible();
+
+  await inventoryPage.addProductToCart('Sauce Labs Backpack');
+
+  await inventoryPage.goToCart();
+
+  await expect(cartPage.cartTitle).toBeVisible();
+
+  await cartPage.goToCheckout();
+
+  await expect(page).toHaveURL(/.*checkout-step-one.html/);
+
+  await expect(checkoutPage.firstNameInput).toBeVisible();
+  await expect(checkoutPage.lastNameInput).toBeVisible();
+  await expect(checkoutPage.postalCodeInput).toBeVisible();
+
+  await checkoutPage.fillCheckoutInformation(
+    'Test',
+    'User',
+    '141001'
+  );
+
+  await expect(checkoutPage.firstNameInput).toHaveValue('Test');
+  await expect(checkoutPage.lastNameInput).toHaveValue('User');
+  await expect(checkoutPage.postalCodeInput).toHaveValue('141001');
+
+  await checkoutPage.continueToOverview();
+
+  await expect(page).toHaveURL(/.*checkout-step-two.html/);
+  await expect(page.getByText('Checkout: Overview')).toBeVisible();
+
+  await expect(
+    checkoutPage.getProduct('Sauce Labs Backpack')
+  ).toBeVisible();
+
+  await expect(
+    checkoutPage.getProductPrice('Sauce Labs Backpack')
+  ).toHaveText('$29.99');
+
+  await expect(
+    checkoutPage.getProductQuantity('Sauce Labs Backpack')
+  ).toHaveText('1');
+
+  const itemTotalText = await checkoutPage.getItemTotal().innerText();
+  const taxText = await checkoutPage.getTax().innerText();
+  const totalText = await checkoutPage.getTotal().innerText();
+
+  const itemTotal = parseFloat(itemTotalText.replace('Item total: $', ''));
+  const tax = parseFloat(taxText.replace('Tax: $', ''));
+  const total = parseFloat(totalText.replace('Total: $', ''));
+
+  expect(itemTotal + tax).toBeCloseTo(total, 2);
+
+  await checkoutPage.finishCheckout();
+
+  await expect(page).toHaveURL(/.*checkout-complete.html/);
+
+  await expect(checkoutPage.completeHeader).toBeVisible();
+
+  await expect(checkoutPage.completeHeader).toHaveText('Thank you for your order!');
+
+  await expect(checkoutPage.backHomeButton).toBeVisible();
+  await checkoutPage.backHomeButton.click();
+  await expect(page).toHaveURL(/.*inventory.html/);
+  await expect(inventoryPage.productsTitle).toBeVisible();
 });

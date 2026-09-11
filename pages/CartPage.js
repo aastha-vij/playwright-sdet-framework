@@ -3,6 +3,9 @@ export class CartPage {
         this.page = page;
         this.cartTitle = page.getByText('Your Cart');
         this.cartItem = page.locator('.cart_item');
+        this.checkoutButton = page.getByRole('button', {
+            name: 'Checkout'
+        });
     }
 
     getCartItems() {
@@ -35,5 +38,9 @@ export class CartPage {
 
     async removeProduct(productName) {
         await this.getRemoveBtn(productName).click();
+    }
+
+    async goToCheckout() {
+        await this.checkoutButton.click();
     }
 }

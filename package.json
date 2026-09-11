@@ -13,6 +13,7 @@
     "test:negative": "playwright test --grep @negative",
     "test:products": "playwright test --grep @products",
     "test:cart": "playwright test --grep @cart",
+    "test:checkout": "playwright test --grep @checkout",
     "report": "playwright show-report"
   },
   "keywords": [],
