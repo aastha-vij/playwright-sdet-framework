@@ -12,6 +12,7 @@
     "test:login": "playwright test --grep @login",
     "test:negative": "playwright test --grep @negative",
     "test:products": "playwright test --grep @products",
+    "test:cart": "playwright test --grep @cart",
     "report": "playwright show-report"
   },
   "keywords": [],
