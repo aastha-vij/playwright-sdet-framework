@@ -14,6 +14,7 @@
     "test:products": "playwright test --grep @products",
     "test:cart": "playwright test --grep @cart",
     "test:checkout": "playwright test --grep @checkout",
+    "test:fixture": "playwright test --grep @fixture",
     "report": "playwright show-report"
   },
   "keywords": [],
