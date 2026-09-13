@@ -1,9 +1,13 @@
+import { expect } from '@playwright/test';
+
 export class InventoryPage {
     constructor(page) {
         this.page = page;
         this.productsTitle = page.getByText('Products');
         this.shoppingCartBadge = page.locator('.shopping_cart_badge');
         this.shoppingCartLink = page.locator('.shopping_cart_link');
+        this.sortDropdown = page.locator('.product_sort_container');
+        this.selectedOption = page.locator('.active_option');
     }
 
     async goToCart() {
@@ -38,5 +42,13 @@ export class InventoryPage {
 
     getProductName(ProductName) {
         return this.getProduct(ProductName).locator('.inventory_item_name');
+    }
+
+    async sortProducts(sortValue) {
+        await this.sortDropdown.selectOption(sortValue);
+    }
+
+    async isSortOptionSelected(value) {
+        await expect(this.selectedOption).toHaveText(value);
     }
 }
