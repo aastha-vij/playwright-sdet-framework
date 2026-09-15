@@ -3,6 +3,7 @@ import { LoginPage } from '../pages/LoginPage.js';
 import { InventoryPage } from '../pages/InventoryPage.js';
 import { users } from '../testData/users.js';
 
+// ENUMS later
 const sortOptions = [
     { value: 'az', label: 'Name (A to Z)' },
     { value: 'za', label: 'Name (Z to A)' },
